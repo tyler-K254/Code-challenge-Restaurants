@@ -1,3 +1,5 @@
+from Review import Review
+
 class Customer:
     customers = []
 
@@ -23,3 +25,24 @@ class Customer:
     @classmethod
     def all(cls):
         return cls.customers  
+    
+    def restaurants(self):
+        return list(set([review.restaurant() for review in Review.all() if review.customer() == self]))
+    
+
+    def add_review(self, restaurant, rating):
+        Review(self, restaurant, rating)
+
+    def num_reviews(self):
+        return len([review for review in Review.all() if review.customer() == self])
+    
+    @classmethod
+    def find_by_name(cls, name):
+        for customer in cls.all_customers:
+            if customer.full_name() == name:
+                return customer
+        return None
+    
+    @classmethod
+    def find_all_by_given_name(cls, name):
+        return [customer for customer in cls.all_customers if customer.given_name == name]
